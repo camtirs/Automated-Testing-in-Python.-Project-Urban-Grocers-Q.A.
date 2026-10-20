@@ -1,109 +1,162 @@
 import sender_stand_request
-import data
 
-
-# Crea un nuevo diccionario user_body a partir del diccionario user_body de data.py
-def get_user_body(first_name):
-    user_body = data.user_body.copy()
-    user_body["firstName"] = first_name
-    return user_body
-
-
-# Crea un nuevo usuario utilizando la función post_new_user y devuelve el token de autenticación de la respuesta
-def get_new_user_token(first_name):
-    user_body = get_user_body(first_name)
-    response = sender_stand_request.post_new_user(user_body)
+def get_new_user_token():
+    response = sender_stand_request.post_new_user()
     return response.json()["authToken"]
 
-
-# Crea un nuevo diccionario del cuerpo de kit con el campo name ingresado.
 def get_kit_body(name):
-    kit_body = {"name": name}
-    return kit_body
+    # Crear el diccionario con el cuerpo de la solicitud
+    current_body = {"name": name}
+    return current_body
 
+def positive_assert(name):
+    kit_body = get_kit_body(name)
+    response = sender_stand_request.post_new_client_kit(kit_body, get_new_user_token())
 
-# Función para las pruebas positivas: envía una solicitud POST para crear un nuevo kit de usuario y verifica que el código de respuesta sea 201 y que el campo name en la respuesta coincida con el valor en el kit_body
-def positive_assert(kit_body, auth_token):
-    response = sender_stand_request.post_new_user_kit(kit_body, auth_token)
+    # Comprueba si el código de estado es 201
     assert response.status_code == 201
+    # Comprueba que el campo "name" coincide
     assert response.json()["name"] == kit_body["name"]
 
+def negative_assert(name):
+    kit_body = get_kit_body(name)
+    response = sender_stand_request.post_new_client_kit(kit_body, get_new_user_token())
 
-# Función para las pruebas negativas: envía una solicitud POST para crear un nuevo kit de usuario y verifica que el código de respuesta sea 400
-def negative_assert_code_400(kit_body, auth_token):
-    response = sender_stand_request.post_new_user_kit(kit_body, auth_token)
+    expected_response = {
+       "code": 400,
+       "message": "El nombre debe contener sólo letras latino, un espacio y un guión. De 2 a 15 caracteres"
+   }
+
+    # Agrega esta línea para ver qué código estás recibiendo
+    print(f"Código de estado recibido: {response.status_code}")
+    print(f"Respuesta completa: {response.json()}")
+
+    # Comprueba si el código de estado es 201
     assert response.status_code == 400
+    # Comprueba que el campo "name" coincide
+    assert response.json() == expected_response
 
 
-# PARA PROBAR LOS TEST CASES AUTOMATIZADOS: INGRESA EL COMANDO "Pytest" en la terminal
 
-# №1 El número permitido de caracteres (1)
-# Resultado esperado: Código de respuesta: 201 El campo "name" del cuerpo de la respuesta coincide con el campo "name" del cuerpo de la solicitud
-def test_create_kit_1_letter_in_name_get_success_response():
-    auth_token = get_new_user_token("Andrea")
-    kit_body = get_kit_body("a")
-    positive_assert(kit_body, auth_token)
+# Prueba 1
+def test_kit_name_with_1_character():
+    positive_assert("a")
+try:
+    test_kit_name_with_1_character()
+    print("✅ Prueba 1 pasó")
+except AssertionError:
+    print("❌ Prueba 1 falló")
 
+# Prueba 2
+def test_kit_name_with_511_characters():
+    positive_assert("Abcdabcdabcdabcdabcdabcdabcdabcdabcd\
+                    abcdabcdabcdabcdabcdabcdabcdabcdabcd\
+                    abcdabcdabcdabcdabcdabcdabcdabcdabcd\
+                    abcdabcdabcdabcdabcdabcdabcdabcdabcd\
+                    abcdabcdabcdabcdabcdabcdabcdabcdabcd\
+                    abcdabcdabcdabcdabcdabcdabcdabcdabcda\
+                    bcdabcdabcdabcdabcdabcdabcdabcdabcdab\
+                    cdAbcdabcdabcdabcdabcdabcdabcdabcdab\
+                    cdabcdabcdabcdabcdabcdabcdabcdabcdab\
+                    cdabcdabcdabcdabcdabcdabcdabcdabcdabc\
+                    dabcdabcdabcdabcdabcdabcdabcdabcdabcd\
+                    abcdabcdabcdabcdabcdabcdabcdabcdabcd\
+                    abcdabcdabcdabcdabcdabcdabcdabcdabcdab\
+                    cdabcdabcdabcdabcdabcdabcdabcdabcdabC")
+try:
+    test_kit_name_with_511_characters()
+    print("✅ Prueba 2 pasó")
+except AssertionError:
+    print("❌ Prueba 2 falló")
 
-# №2 El número permitido de caracteres (511)
-# Resultado esperado: Código de respuesta: 201; El campo "name" en el cuerpo de la respuesta coincide con el campo "name" en el cuerpo de la solicitud
-def test_create_kit_511_letter_in_name_get_success_response():
-    auth_token = get_new_user_token("Andrea")
-    kit_body = get_kit_body("AbcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdAbcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabC")
-    positive_assert(kit_body, auth_token)
+# Prueba 3
+def test_kit_name_less_than_1_character():
+    negative_assert("")
+try:
+    test_kit_name_less_than_1_character()
+    print("✅ Prueba 3 pasó")
+except AssertionError:
+    print("❌ Prueba 3 falló")
 
+# Prueba 4
+def test_kit_name_with_512_characters():
+    negative_assert("Abcdabcdabcdabcdabcdabcdabcdabcda\
+    bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcda\
+    bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcda\
+    bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcda\
+    bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcda\
+    bcdabcdabcdabcdAbcdabcdabcdabcdabcdabcdabcdabcdabcda\
+    bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcda\
+    bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcda\
+    bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcda\
+    bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcda\
+    bcdabcdabcD")
+try:
+    test_kit_name_with_512_characters()
+    print("✅ Prueba 4 pasó")
+except AssertionError:
+    print("❌ Prueba 4 falló")
 
-# №3 El número de caracteres es menor que la cantidad permitida (0)
-# Resultado esperado: Código de respuesta: 400
-def test_create_kit_0_letter_in_name_get_error_response():
-    auth_token = get_new_user_token("Andrea")
-    kit_body = get_kit_body("")
-    negative_assert_code_400(kit_body, auth_token)
+# Prueba 5
+def test_kit_name_with_special_characters():
+    positive_assert("#%@/\\,""\u2116")
 
+try:
+    test_kit_name_with_special_characters()
+    print("✅ Prueba 5 pasó")
+except AssertionError:
+    print("❌ Prueba 5 falló")
 
-# №4 El número de caracteres es mayor que la cantidad permitida (512)
-# Resultado esperado: Código de respuesta: 400
-def test_create_kit_512_letter_in_name_get_error_response():
-    auth_token = get_new_user_token("Andrea")
-    kit_body = get_kit_body("AbcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdAbcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcD")
-    negative_assert_code_400(kit_body, auth_token)
+# Prueba 6
+def test_kit_name_with_spaces():
+    positive_assert("A Aaa")
 
+try:
+    test_kit_name_with_spaces()
+    print("✅ Prueba 6 pasó")
+except AssertionError:
+    print("❌ Prueba 6 falló")
 
-# №5 Se permiten caracteres especiales
-# Resultado esperado: Código de respuesta: 201; El campo "name" del cuerpo de la respuesta coincide con el campo "name" del cuerpo de la solicitud
-def test_create_kit_special_caracter_in_name_get_succes_response():
-    auth_token = get_new_user_token("Andrea")
-    kit_body = get_kit_body("№%@',")
-    positive_assert(kit_body, auth_token)
+# Prueba 7
+def test_kit_name_with_numbers_as_strings():
+    positive_assert("123")
 
+try:
+    test_kit_name_with_numbers_as_strings()
+    print("✅ Prueba 7 pasó")
+except AssertionError:
+    print("❌ Prueba 7 falló")
 
-# №6 Se permiten espacios
-# Resultado esperado: Código de respuesta: 201; El campo "name" del cuerpo de la respuesta coincide con el campo "name" del cuerpo de la solicitud
-def test_create_kit_with_spaces_in_name_get_succes_response():
-    auth_token = get_new_user_token("Andrea")
-    kit_body = get_kit_body("A aaa")
-    positive_assert(kit_body, auth_token)
+# Prueba 8
+def test_kit_without_parameters():
+    token = get_new_user_token()
+    current_body = {}
+    expected_response = {
+       "code": 400,
+       "message": "No se han aprobado todos los parámetros requeridos"
+   }
+    response = sender_stand_request.post_new_client_kit(current_body, token)
+    # Agrega esta línea para ver qué código estás recibiendo
+    print(f"Código de estado recibido: {response.status_code}")
+    print(f"Respuesta completa: {response.json()}")
 
+    # Comprueba si el código de estado es 201
+    assert response.status_code == 400
+    # Comprueba que el campo "name" coincide
+    assert response.json() == expected_response
 
-# №7 Se permiten números
-# Resultado esperado: Código de respuesta: 201; El campo "name" del cuerpo de la respuesta coincide con el campo "name" del cuerpo de la solicitud
-def test_create_kit_numbers_in_name_get_succes_response():
-    auth_token = get_new_user_token("Andrea")
-    kit_body = get_kit_body("123")
-    positive_assert(kit_body, auth_token)
+try:
+    test_kit_without_parameters()
+    print("✅ Prueba 8 pasó")
+except AssertionError:
+    print("❌ Prueba 8 falló")
 
+# Prueba 9
+def test_kit_name_with_numbers_as_a_parameter():
+    negative_assert(123)
 
-# №8 El parámetro no se pasa en la solicitud
-# Resultado esperado: Código de respuesta: 400
-def test_create_kit_no_parameter_get_error_response():
-    auth_token = get_new_user_token("Andrea")
-    kit_body = {} #Se ingresa un diccionario vac[io
-    negative_assert_code_400(kit_body, auth_token)
-
-
-# №9 Se ha pasado un tipo de parámetro diferente (número)
-# Resultado esperado: Código de respuesta: 400
-def test_create_kit_type_number_get_error_response():
-    auth_token = get_new_user_token("Andrea")
-    kit_body = get_kit_body(123)
-    negative_assert_code_400(auth_token, kit_body)
+try:
+    test_kit_name_with_numbers_as_a_parameter()
+    print("✅ Prueba 9 pasó")
+except AssertionError:
+    print("❌ Prueba 9 falló")
