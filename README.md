@@ -17,19 +17,11 @@ La automatización se basa en una lista de comprobación que contempla nueve esc
 - Gestionar el código fuente mediante Git y GitHub, siguiendo un flujo de trabajo ordenado y documentado.
 
 
-
-
 ## Archivos principales
 ````
 configuraCion.py:  
 Contiene la URL del servicio y los 
 parámetros de configuración necesarios para las solicitudes de API.
-````
-
-````
-sender_stand_request.py:  
-Contiene los métodos encargados de enviar
-solicitudes de API a los puntos finales de la aplicación.
 ````
 
 ````
@@ -44,6 +36,16 @@ data.py:
 Almacena las cargas útiles de las solicitudes, los datos de prueba y 
 los valores esperados utilizados durante la ejecución de las pruebas.
 ````
+
+````
+sender_stand_request.py:  
+Contiene los métodos encargados de enviar
+solicitudes de API a los puntos finales de la aplicación.
+````
+
+
+
+
 
 
 ## Tecnologías y herramientas
