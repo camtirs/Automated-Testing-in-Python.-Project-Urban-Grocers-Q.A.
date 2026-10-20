@@ -1,4 +1,4 @@
-# 8 Sprint Project — Introducción a las pruebas automatizadas de Urban Grocers
+# 8 Sprint Project — Urban Grocers e Introducción a las pruebas automatizadas.
 
 ## Descripción del proyecto
 
