@@ -16,6 +16,32 @@ La automatización se basa en una lista de comprobación que contempla nueve esc
 - Utilizar Pytest para ejecutar las pruebas y analizar los resultados.
 - Gestionar el código fuente mediante Git y GitHub, siguiendo un flujo de trabajo ordenado y documentado.
 
+- ## Main Files
+````
+configuration.py:  
+Contains the service URL and configuration 
+settings required for API requests.
+````
+
+````
+sender_stand_request.py:  
+Includes methods responsible for sending
+API requests to the application endpoints.
+````
+
+````
+create_kit_name_test.py:  
+Contains the automated test cases used to
+validate kit name 
+creation requirements and expected responses.
+````
+
+````
+data.py:  
+Stores request payloads, test data, and 
+expected values used during test execution.
+````
+
 
 
 ## Tecnologías y herramientas
