@@ -50,4 +50,3 @@ Los resultados permiten identificar comportamientos conformes y posibles discrep
 
 Disponer de una suite de pruebas automatizadas organizada, reutilizable y documentada que permita evaluar las reglas de validación del campo `name` durante la creación de kits de productos, facilitando la detección de errores y contribuyendo a la calidad y confiabilidad del servicio.
 
-**Nota:** la finalización y aprobación del proyecto dependen de la ejecución satisfactoria de las pruebas contra el servidor asignado y de la entrega del repositorio conforme a los requisitos de TripleTen.
