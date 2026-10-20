@@ -47,7 +47,6 @@ solicitudes de API a los puntos finales de la aplicación.
 
 
 
-
 ## Tecnologías y herramientas
 
 - **Python:** lenguaje utilizado para desarrollar las pruebas automatizadas.
@@ -82,3 +81,4 @@ Los resultados permiten identificar comportamientos conformes y posibles discrep
 
 Disponer de una suite de pruebas automatizadas organizada, reutilizable y documentada que permita evaluar las reglas de validación del campo `name` durante la creación de kits de productos, facilitando la detección de errores y contribuyendo a la calidad y confiabilidad del servicio.
 
+Elaborated by:  Camilo Andrés Tiuzo Q.a Engineer Course 88
