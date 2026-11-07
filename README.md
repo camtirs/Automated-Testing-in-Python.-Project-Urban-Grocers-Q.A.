@@ -1,84 +1,87 @@
-# 8 Sprint Project — Urban Grocers e Introducción a las Pruebas Automatizadas.
+#  Sprint Project — Urban Grocers and Introduction to Automated Testing.
 
-## Descripción del proyecto
+## Project Description
 
-Este proyecto tiene como objetivo desarrollar y ejecutar pruebas automatizadas para validar el funcionamiento de la API de Urban Grocers, específicamente el proceso de creación de kits de productos y las reglas de validación del campo `name`.
+The goal of this project is to develop and run automated tests to validate the functionality of the Urban Grocers API, specifically the process of creating product kits and the validation rules for the `name` field.
 
-La automatización se basa en una lista de comprobación que contempla nueve escenarios de prueba, diseñados para verificar el comportamiento del sistema ante entradas válidas e inválidas. Se evalúan los límites de longitud del nombre, los campos vacíos, los caracteres especiales, los espacios, los valores numéricos representados como texto, la ausencia del parámetro obligatorio y el envío de tipos de datos incorrectos.
+The automation is based on a checklist that includes nine test scenarios, designed to verify the system’s behavior in response to valid and invalid inputs. The evaluation covers name length limits, empty fields, special characters, spaces, numeric values represented as text, the absence of a required parameter, and the submission of incorrect data types.
 
-## Objetivos
+## Objectives
 
-- Automatizar los nueve casos de prueba definidos en los requisitos del proyecto.
-- Validar los códigos de respuesta HTTP y la correspondencia entre los datos enviados y los recibidos.
-- Verificar los límites de aceptación del campo `name`.
-- Implementar funciones reutilizables para el envío de solicitudes HTTP y la gestión de la autenticación.
-- Organizar el código en módulos independientes para facilitar su mantenimiento, lectura y reutilización.
-- Utilizar Pytest para ejecutar las pruebas y analizar los resultados.
-- Gestionar el código fuente mediante Git y GitHub, siguiendo un flujo de trabajo ordenado y documentado.
+- Automate the nine test cases defined in the project requirements.
+- Validate HTTP response codes and the correspondence between sent and received data.
+- Verify the acceptance limits for the `name` field.
+- Implement reusable functions for sending HTTP requests and managing authentication.
+- Organize the code into independent modules to facilitate maintenance, readability, and reuse.
+- Use Pytest to run the tests and analyze the results.
+- Manage the source code using Git and GitHub, following an organized and documented workflow.
 
 
-## Archivos principales
+## Main Files
 ````
-configuraCion.py:  
-Contiene la URL del servicio y los 
-parámetros de configuración necesarios para las solicitudes de API.
-````
-
-````
-create_kit_name_test.py:  
-Contiene los casos de prueba automatizados utilizados para
-validar los requisitos de creación del nombre del kit 
-y las respuestas esperadas.
+configuraCion.py:
+Contains the service URL and the
+configuration parameters required for API requests.
 ````
 
 ````
-data.py:  
-Almacena las cargas útiles de las solicitudes, los datos de prueba y 
-los valores esperados utilizados durante la ejecución de las pruebas.
+create_kit_name_test.py:
+Contains the automated test cases used to
+validate the kit name creation requirements
+and the expected responses.
 ````
 
 ````
-sender_stand_request.py:  
-Contiene los métodos encargados de enviar
-solicitudes de API a los puntos finales de la aplicación.
+data.py:
+Stores the request payloads, test data, and
+expected values used during test execution.
+````
+
+````
+sender_stand_request.py:
+Contains the methods responsible for sending
+API requests to the application’s endpoints.
 ````
 
 
+## Technologies and Tools
+
+- **Python:** language used to develop automated tests.
+- **Pytest:** framework for organizing and running test cases.
+- **Requests:** library for sending HTTP requests to the API.
+- **Git:** version control system.
+- **GitHub:** a platform for hosting and deploying the repository.
+- **Urban Grocers API:** the service being tested.
 
 
 
-## Tecnologías y herramientas
+## Project Structure
 
-- **Python:** lenguaje utilizado para desarrollar las pruebas automatizadas.
-- **Pytest:** framework para organizar y ejecutar los casos de prueba.
-- **Requests:** biblioteca para enviar solicitudes HTTP a la API.
-- **Git:** sistema de control de versiones.
-- **GitHub:** plataforma para alojar y entregar el repositorio.
-- **Urban Grocers API:** servicio sometido a pruebas.
+- `configuration.py`: centralizes the server URL and endpoint routes.
+- `data.py`: contains test data and request bodies.
+- `sender_stand_request.py`: implements functions to create users, obtain the authentication token, and send kit creation requests.
+- `create_kit_name_kit_test.py`: contains the nine automated test cases for the `name` field.
+- `README.md`: documents the project’s purpose, its requirements, and the steps to run the tests.
+- `.gitignore`: excludes temporary files, caches, and other items that should not be included in version control.
 
-## Estructura del proyecto
 
-- `configuration.py`: centraliza la URL del servidor y las rutas de los endpoints.
-- `data.py`: contiene los datos de prueba y los cuerpos de las solicitudes.
-- `sender_stand_request.py`: implementa las funciones para crear usuarios, obtener el token de autenticación y enviar solicitudes de creación de kits.
-- `create_kit_name_kit_test.py`: contiene los nueve casos de prueba automatizados para el campo `name`.
-- `README.md`: documenta el propósito del proyecto, sus requisitos y los pasos para ejecutar las pruebas.
-- `.gitignore`: excluye archivos temporales, cachés y otros elementos que no deben incluirse en el control de versiones.
 
-## Criterios de validación
+## Validation Criteria
 
-Las pruebas positivas verifican que la API responda con el código HTTP `201` y que el nombre devuelto coincida con el enviado en la solicitud. Las pruebas negativas comprueban que las entradas no válidas generen el código HTTP `400`, de acuerdo con los requisitos establecidos.
+Positive tests verify that the API responds with HTTP status code `201` and that the returned name matches the one sent in the request. Negative tests verify that invalid inputs result in HTTP status code `400`, in accordance with the established requirements.
 
-## Ejecución
+## Execution
 
-Una vez configurada la URL vigente del servidor de Urban Grocers e instaladas las dependencias necesarias, las pruebas se ejecutan mediante:
+Once the current Urban Grocers server URL has been configured and the necessary dependencies have been installed, the tests are run using:
 
 `pytest -v create_kit_name_kit_test.py`
 
-Los resultados permiten identificar comportamientos conformes y posibles discrepancias entre la respuesta de la API y los resultados esperados.
+The results allow you to identify compliant behavior and potential discrepancies between the API response and the expected results.
 
-## Resultado esperado
+## Expected Result
 
-Disponer de una suite de pruebas automatizadas organizada, reutilizable y documentada que permita evaluar las reglas de validación del campo `name` durante la creación de kits de productos, facilitando la detección de errores y contribuyendo a la calidad y confiabilidad del servicio.
+To have an organized, reusable, and documented automated test suite that evaluates the validation rules for the `name` field during the creation of product kits, facilitating error detection and contributing to the quality and reliability of the service.
 
-Elaborated by:  Camilo Andrés Tiuzo Q.a Engineer Course 88
+Prepared by:
+Camilo Andrés Tiuzo 
+Quality Assurance Engineer
